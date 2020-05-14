@@ -1,0 +1,224 @@
+<doctype charset="utf-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+<h1 id="titulo">Jogo da Velha</h1>
+<div id="placar">
+    <h2 id="vezJogador" >PRÓXIMO = XIS</h2>
+    <h2 id="jogadorX" >Vitórias jogador X = 0</h2>
+    <h2 id="jogadorO" >Vitórias jogador O = 0</h2>
+    <button class="botao" id="zeraPlacar" onclick="zeraPlacar ()">ZERAR PLACAR</button>
+</div>
+
+<div id="tabuleiro">
+    <div id="popUpEmpate" class="popUpEmpateFechado">
+        <h1>EMPATE!</h1>
+        <button class="botao" onclick="reiniciar()">REINICIAR</button>
+    </div>
+    <div id="popUpVitoria" class="popUpVitoriaFechado">
+        <h1 id="voceGanhou"></h1>
+        <button class="botao" onclick="reiniciar()">REINICIAR</button>
+    </div>
+    <div class= "quadrado" id="p1" onclick="clicarQuadrado('p1')"></div>
+    <div class= "quadrado" id="p2" onclick="clicarQuadrado('p2')"></div>
+    <div class= "quadrado" id="p3" onclick="clicarQuadrado('p3')"></div>
+   
+    <div class= "quadrado" id="p4" onclick="clicarQuadrado('p4')"></div>
+    <div class= "quadrado" id="p5" onclick="clicarQuadrado('p5')"></div>
+    <div class= "quadrado" id="p6" onclick="clicarQuadrado('p6')"></div>
+    
+    <div class= "quadrado" id="p7" onclick="clicarQuadrado('p7')"></div>
+    <div class= "quadrado" id="p8" onclick="clicarQuadrado('p8')"></div>
+    <div class= "quadrado" id="p9" onclick="clicarQuadrado('p9')"></div>
+</div>
+
+<style>
+    #vezJogador {
+        margin-left: 30px;
+    }
+    #placar {
+        float: left;
+        font-family: 'Luckiest Guy', cursive;
+    }
+    #zeraPlacar {
+        width: 200;
+        height: 90;
+    }
+    #titulo {
+        text-align: center;
+        font-family: 'Luckiest Guy', cursive;
+    }
+    #tabuleiro {
+        margin: auto;
+        width: 606;
+        height: 606;
+        border: 1px black solid;
+        background-color: grey;
+        z-index: 100;
+    }
+    .quadrado {
+        width: 200;
+        height: 200;
+        position: relative;
+        float: left;
+        border: solid black 1px;
+        text-align: center;
+        line-height: 2;
+        font-size: 100px;
+        z-index: 100;
+    }
+    .popUpVitoriaFechado {
+        display: none;
+    }
+    .popUpVitoriaAberto {
+        display: block;
+        background-color: rgb(41, 184, 219);
+        position: absolute;
+        z-index: 9999;
+        font-family: 'Luckiest Guy', cursive;
+    }
+    #popUpVitoria {
+        width: 300px;
+        height: 200px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 2 ;
+        margin: 203px 153px;
+        border-radius: 30px;
+    }
+    .popUpEmpateFechado {
+        display: none;
+    }
+    .popUpEmpateAberto {
+        display: block;
+        background-color: rgb(41, 184, 219);
+        position: absolute;
+        z-index: 9999;
+        font-family: 'Luckiest Guy', cursive;            
+    }
+    #popUpEmpate {
+        width: 300px;
+        height: 200px;
+        text-align: center;
+        font-size: 20px;
+        line-height: 2 ;
+        position: absolute;
+        margin: 203px 153px;
+        border-radius: 30px;
+    }
+    .botao {
+        width:150px;
+        height: 50px;
+        border-color:black;
+        background:linear-gradient(to bottom, #9daab6 5%, #767743 100%);
+        box-shadow:inset 0px 1px 0px 0px #fff4f3;
+        color:#fff;
+        text-shadow:0px 1px 0px #528009;
+        align-content: center;
+        border-radius: 10px;
+        font-family: 'Luckiest Guy', cursive;
+        font-size: 25px;
+    }
+</style>
+
+<script>
+    //VARIAVEIS ESCOPO GERAL
+    var pGeral = document.getElementsByClassName ('quadrado');
+    var popUpVitoria = document.getElementById('popUpVitoria');
+    var popUpEmpate = document.getElementById('popUpEmpate');
+    var placarX = document.getElementById('jogadorX');
+    var placarO = document.getElementById('jogadorO');
+    var vitoria = document.getElementById('voceGanhou');
+    var clique = false
+    var numeroO = 0
+    var numeroX = 0
+    // REINICIAR PARTIDA
+    function reiniciar () { 
+        for ( var i = 0 ; i < pGeral.length ; i++) {
+            pGeral[i].textContent = ""
+            popUpVitoria.className = 'popUpVitoriaFechado' ;
+            popUpEmpate.className = 'popUpEmpateFechado' ;
+        }
+    }
+    //PLACAR
+    function adicionaPlacar () {
+        if (clique) { 
+            numeroX ++
+            placarX.textContent = "Vitórias jogador X = " + (numeroX);
+            alertaVitoria("Xis");
+        } else { 
+            numeroO ++
+            placarO.textContent = "Vitórias jogador O = " + (numeroO);
+            alertaVitoria("bola");
+        }
+    }
+    function zeraPlacar () {
+        for ( var i = 0 ; i < pGeral.length ; i++) {
+            if(pGeral[i].textContent != "") {
+                return 
+            }   
+        }
+        numeroO = 0;
+        numeroX = 0;
+        placarO.textContent = "Vitórias jogador O = 0";
+        placarX.textContent = "Vitórias jogador X = 0";
+    }
+    //ALERTAS 
+    function alertaVitoria (jogador) {
+        setTimeout(function() {
+          vitoria.textContent = "Jogador "+ jogador + " ganhou";
+          popUpVitoria.className = 'popUpVitoriaAberto'
+        },50) 
+    }
+    function alertaEmpate () {
+        for ( var i = 0 ; i < pGeral.length ; i++){
+            if(pGeral[i].textContent == "" ) {
+                return 
+            }
+        }
+        setTimeout(function() {
+            popUpEmpate.className = 'popUpEmpateAberto' ;
+        },50) 
+    }
+    //AÇÃO DO USUARIO
+    function clicarQuadrado (id) {
+        elemento = document.getElementById (id);
+        vezJogador = document.getElementById ('vezJogador')
+        if (popUpVitoria.className == 'popUpVitoriaFechado') {
+            if (elemento.textContent == "") {
+                if (clique == false) {
+                    elemento.textContent = "X";
+                    vezJogador.textContent = "PRÓXIMO = BOLA"    
+                } else {
+                    elemento.textContent = "O";
+                    vezJogador.textContent = "PRÓXIMO = XIS"
+                }   
+                clique = !clique
+                if (verificaVitoria ()) {
+                    adicionaPlacar()
+                }else {
+                    alertaEmpate()
+                }
+            }
+        }    
+    }
+    //REGRA DO JOGO
+    function verificaVitoria () {
+        var vitoria = [ [0,1,2],
+                        [3,4,5],
+                        [6,7,8],
+                        [0,4,8],
+                        [6,4,2],
+                        [0,3,6],
+                        [1,4,7],
+                        [2,5,8] ]
+        for ( var i = 0 ; i < vitoria.length ; i++) {
+            if (pGeral[vitoria[i][0]].textContent == pGeral[vitoria[i][1]].textContent &&
+                pGeral[vitoria[i][0]].textContent == pGeral[vitoria[i][2]].textContent &&
+                pGeral[vitoria[i][0]].textContent != "") {
+                return true
+            }
+        }
+        return false
+    }
+</script>
+      
